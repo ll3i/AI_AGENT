@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c \"import json; nb=json.load\\(open\\('안경즈팀.ipynb', encoding='utf-8'\\)\\); [print\\(f'=== Cell {i} \\({c[\\\\\"cell_type\\\\\"]}\\) ==='\\); print\\(''.join\\(c['source']\\)\\) for i,c in enumerate\\(nb['cells']\\)]\")",
+      "Bash(python -c ':*)",
+      "Bash(python -u -)"
+    ]
+  }
+}

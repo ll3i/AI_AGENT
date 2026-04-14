@@ -1,0 +1,19 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDEs
+.vscode/
+
+# Virtual environments
+venv/
+env/
+
+# Secrets
+.env
+
+# Optional: do you want to keep data local?
+# We'll push them so the dashboard works on github, but we skip mock_gen script
+mock_gen.py
+*.ipynb
