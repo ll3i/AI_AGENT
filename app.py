@@ -8,15 +8,22 @@ import base64
 from PIL import Image, ImageDraw, ImageFont
 import sys
 
-# Load .env if present
+# Load .env if present (local dev)
 try:
     from dotenv import load_dotenv
     load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), ".env"))
 except ImportError:
     pass
 
+# Streamlit Cloud secrets → env var fallback
+try:
+    if "OPENAI_API_KEY" in st.secrets:
+        os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
+except Exception:
+    pass
+
 # Ensure run_solution is importable
-sys.path.append("C:\\Users\\SSAFY\\Desktop\\AI_AGENT")
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 try:
     import run_solution
 except ImportError:
@@ -338,13 +345,13 @@ with st.sidebar:
     st.markdown("---")
     
     st.markdown("**경로 설정**")
-    default_explain_path = "explanations.csv" if os.path.exists("explanations.csv") else "C:\\Users\\SSAFY\\Desktop\\AI_AGENT\\explanations.csv"
+    default_explain_path = "explanations.csv" if os.path.exists("explanations.csv") else os.path.join(os.path.dirname(os.path.abspath(__file__)), "explanations.csv")
     explain_path_raw = st.text_input("explanations.csv 경로", value=default_explain_path)
     explain_path = explain_path_raw.strip(' "\'')
     if os.path.isdir(explain_path):
         explain_path = os.path.join(explain_path, "explanations.csv")
     
-    default_img_path = "images" if os.path.exists("images") else "C:\\Users\\SSAFY\\Desktop\\AI_AGENT\\images"
+    default_img_path = "images" if os.path.exists("images") else os.path.join(os.path.dirname(os.path.abspath(__file__)), "images")
     image_folder_raw = st.text_input("이미지 폴더 (images) 경로", value=default_img_path)
     image_folder = image_folder_raw.strip(' "\'')
     
@@ -406,7 +413,7 @@ h3_faults = sum(_is_faulty(p, "hole3_status") for p in parsed_list)
 
 test_csv_path = os.path.join(os.path.dirname(explain_path), "test.csv")
 if not os.path.exists(test_csv_path):
-    test_csv_path = "C:\\Users\\SSAFY\\Desktop\\AI_AGENT\\test.csv"
+    test_csv_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "test.csv")
 test_df = load_csv(test_csv_path)
 
 # Tabs

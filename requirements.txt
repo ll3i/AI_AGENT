@@ -3,3 +3,4 @@ pandas
 pillow
 numpy
 requests
+python-dotenv
