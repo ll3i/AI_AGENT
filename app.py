@@ -8,6 +8,13 @@ import base64
 from PIL import Image, ImageDraw, ImageFont
 import sys
 
+# Load .env if present
+try:
+    from dotenv import load_dotenv
+    load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), ".env"))
+except ImportError:
+    pass
+
 # Ensure run_solution is importable
 sys.path.append("C:\\Users\\SSAFY\\Desktop\\AI_AGENT")
 try:
@@ -554,7 +561,7 @@ with tab_vis:
 # TAB 2: 통합 대시보드
 # -----------------------------------------------------
 with tab_dash:
-    st.subheader("📊 통합 데이터 관제 대시보드")
+    st.subheader("📊 통합 데이터 관리 대시보드")
     st.markdown("`explanations.csv` 에 누적된 전체 검사 데이터를 기반으로 품질 현황을 요약합니다.")
     
     m1, m2, m3, m4 = st.columns(4)
@@ -568,7 +575,7 @@ with tab_dash:
     c1, c2 = st.columns(2)
     
     with c1:
-        st.markdown("**1. 양품 vs 불량 비율 (Target vs Defect)**")
+        st.markdown("1. 양품 vs 불량 비율 (Target vs Defect)")
         pie_data = pd.DataFrame({
             "판정 결과": ["Normal (0)", "Abnormal (1)"],
             "수량": [normal, abnormal]
@@ -579,7 +586,7 @@ with tab_dash:
             st.info("데이터가 없습니다.")
             
     with c2:
-        st.markdown("**2. API 요청 검사 유효성 (Success/Fail)**")
+        st.markdown("2. API 요청 검사 유효성 (Success/Fail)")
         if "valid" in df.columns:
             valid_counts = df["valid"].value_counts().reset_index()
             valid_counts.columns = ["유효성(Valid)", "수량"]
@@ -590,7 +597,7 @@ with tab_dash:
     c3, c4 = st.columns(2)
     
     with c3:
-        st.markdown("**3. 세부 불량 요인 분석 (Defect Breakdown)**")
+        st.markdown("3. 세부 불량 요인 분석 (Defect Breakdown)")
         st.caption("어떤 부위에서 불량이 가장 자주 일어나는지 부품별로 필터링한 데이터입니다.")
         defect_data = pd.DataFrame({
             "부위별 고장 빈도": ["패키지 외형 손상", "H1 (좌측) 핀 단선", "H2 (중앙) 핀 단선", "H3 (우측) 핀 단선"],
@@ -599,7 +606,7 @@ with tab_dash:
         st.bar_chart(defect_data, color="#FF4B4B")
         
     with c4:
-        st.markdown("**4. 검사 확신도(Confidence) 추세**")
+        st.markdown("4. 검사 확신도(Confidence) 추세")
         st.caption("AI 판단 모델이 각 샘플에서 보여준 신뢰도 편차입니다.")
         if "confidence" in df.columns:
             st.line_chart(df["confidence"], color="#00FF00")
@@ -608,7 +615,7 @@ with tab_dash:
     c5, c6 = st.columns(2)
     
     with c5:
-        st.markdown("**5. 난이도별 시스템 처리량 (다수결 발동 횟수)**")
+        st.markdown("5. 난이도별 시스템 처리량 (다수결 발동 횟수)")
         st.caption("confidence 기준 미달로 집중 재판독(used_vote)을 거친 케이스.")
         if "used_vote" in df.columns:
             vote_counts = df["used_vote"].value_counts(dropna=False).rename({True: "복합 재검사(True)", False: "일반 판별(False)"}).reset_index()
@@ -617,7 +624,7 @@ with tab_dash:
             st.bar_chart(vote_counts)
 
     with c6:
-        st.markdown("**6. 혼동 자가교정 시도 (CoVe 발동)**")
+        st.markdown("6. 혼동 자가교정 시도 (CoVe 발동)")
         st.caption("uncertain 판정으로 인해 시스템 내 추가 교정 로직이 사용된 빈도.")
         if "checks" in df.columns:
             cove_count = sum(1 for p in parsed_list if p.get("cove_used", False) is True)
@@ -629,15 +636,28 @@ with tab_dash:
 # TAB 4: 🎛️ 튜닝 랩 (Threshold & Vision)
 # -----------------------------------------------------
 with tab_tuning:
-    st.markdown("## 🎛️ 파라미터 / 튜닝 랩")
-    st.markdown("이곳에서는 인공지능의 **합격 판정 컷오프(임계값)**와 **이미지 전처리 필터 성능**을 즉각적으로 조절하고 시뮬레이션 해볼 수 있습니다.")
+    st.markdown("## 🎛️ 파라미터 / 튜닝 ")
+    st.markdown("이곳에서는 인공지능의 합격 판정 컷오프(임계값)와 이미지 전처리 필터 성능을 즉각적으로 조절하고 시뮬레이션 해볼 수 있습니다.")
     
     st.markdown("---")
     st.subheader("1. AI 판정 임계값(Threshold) 시뮬레이터")
     st.caption("Confidence 임계값을 극단적으로 조절하면 수율(합격률)이 어떻게 변동되는지 실험해 보세요.")
     
-    sim_thresh = st.slider("가상 Confidence 커트라인 설정", min_value=0.5, max_value=1.0, value=0.95, step=0.01)
-    
+    if "confidence" in df.columns:
+        conf_min = float(df["confidence"].min())
+        conf_max = float(df["confidence"].max())
+        conf_mean = float(df["confidence"].mean())
+        default_thresh = round(max(conf_min, min(conf_mean, conf_max)), 2)
+    else:
+        conf_min, conf_max, default_thresh = 0.0, 1.0, 0.5
+
+    sim_thresh = st.slider(
+        "가상 Confidence 커트라인 설정",
+        min_value=0.0, max_value=1.0,
+        value=default_thresh, step=0.01,
+        help=f"현재 데이터의 confidence 범위: {conf_min:.2f} ~ {conf_max:.2f} (평균 {conf_mean:.2f})"
+    )
+
     if "confidence" in df.columns:
         strict_fails = len(df[(df["label"] == 1) | (df["confidence"] < sim_thresh)])
         strict_pass = len(df) - strict_fails
@@ -699,7 +719,7 @@ with tab_tuning:
 with tab_report:
     st.subheader("📝 데일리 품질 요약 LLM 보고서")
     st.markdown("오늘자 전체 데이터를 종합하여 LLM 시스템이 경영진 보고용 텍스트를 기안해 줍니다.")
-    
+
     if st.button("✨ 오늘자 보고서 자동 작성 (GPT)"):
         with st.spinner("AI가 데이터를 종합하여 보고서를 쓰고 있습니다..."):
             stats_str = f"전체:{total}건, 정상:{normal}건, 불량:{abnormal}건, 평균신뢰도:{avg_conf:.2f}. 파손유형패키지:{pkg_damage}, H1단선:{h1_faults}, H2단선:{h2_faults}, H3단선:{h3_faults}"
@@ -708,11 +728,17 @@ with tab_report:
                 {"role": "user", "content": stats_str}
             ]
             try:
-                report_txt = run_solution._post_chat(prompt, timeout=60, max_retries=1)
+                api_key = os.environ.get("OPENAI_API_KEY", "")
+                headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
+                payload = {"model": run_solution.MODEL, "messages": prompt, "max_completion_tokens": 4096}
+                r = requests.post(run_solution.BRIDGE_URL, headers=headers, json=payload, timeout=60)
+                if r.status_code != 200:
+                    raise RuntimeError(f"status={r.status_code}, body={r.text[:300]}")
+                report_txt = r.json()["choices"][0]["message"]["content"].strip()
                 st.session_state["daily_report"] = report_txt
             except Exception as e:
                 st.error(f"LLM API 실패: {e}")
-                
+
     if "daily_report" in st.session_state:
         st.success("보고서 생성 완료")
         st.markdown(st.session_state["daily_report"])
@@ -756,7 +782,7 @@ with tab_alert:
 # -----------------------------------------------------
 with tab_erp:
     st.subheader("🏢 ERP 데이터 연계 및 승인 (Mock)")
-    st.markdown("현재 모델이 판별한 **불량(Abnormal)** 내역을 ERP/MES 시스템으로 전송하거나 추출합니다.")
+    st.markdown("현재 모델이 판별한 불량(Abnormal) 내역을 ERP/MES 시스템으로 전송하거나 추출합니다.")
     
     df_abnormal_erp = df[df["label"] == 1].copy()
     
