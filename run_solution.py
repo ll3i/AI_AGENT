@@ -1,5 +1,5 @@
 import os
-os.chdir(r"C:/Users/SSAFY/Desktop/AI_AGENT")
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 import os
 import re
 import json
