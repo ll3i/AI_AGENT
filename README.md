@@ -2,7 +2,7 @@
 
 반도체 소자 이미지를 분석하여 **정상(Pass) / 불량(Fail)** 을 자동 판정하는 멀티모달 AI Agent 시스템입니다.  
 LLM 기반 다중 시점 비전 검사, 자기검증(CoVe·CRITIC), 그리고 Streamlit 웹 대시보드를 통합한 엔드-투-엔드 파이프라인을 제공합니다.
-
+https://aiagent-qddtpkxykw7ccexdxveke2.streamlit.app/
 ---
 
 ## 시스템 아키텍처
