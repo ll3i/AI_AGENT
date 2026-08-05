@@ -1,0 +1,125 @@
+<svg width="1280" height="640" viewBox="0 0 1280 640" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Vision Inspect Agent overview">
+  <style>
+    .s { font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif; }
+    .m { font-family: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace; }
+  </style>
+
+  <!-- background -->
+  <rect x="0" y="0" width="1280" height="640" fill="#F7F9FB"/>
+
+  <!-- ===== header band (0~120) ===== -->
+  <rect x="72" y="47" width="4" height="34" rx="2" fill="#1454FE"/>
+  <text class="m" x="88" y="58" font-size="13" letter-spacing="3" fill="#1454FE">AI AGENT · VISION</text>
+  <text class="s" x="88" y="96" font-size="34" font-weight="800" letter-spacing="-0.5" fill="#161B24">Vision Inspect Agent<tspan fill="#3B7AFF">.</tspan></text>
+  <text class="m" x="1208" y="96" font-size="13" fill="#94A0B0" text-anchor="end">ll3i · AI_AGENT</text>
+
+  <!-- ===== row 1 ===== -->
+
+  <!-- STEP 01 : input -->
+  <rect x="72" y="150" width="272" height="180" rx="14" fill="#FFFFFF" stroke="#E2E7EE" stroke-width="1"/>
+  <text class="m" x="96" y="182" font-size="12" letter-spacing="1" fill="#3B7AFF">STEP 01</text>
+  <text class="s" x="96" y="212" font-size="19" font-weight="700" fill="#161B24">반도체 이미지 입력</text>
+  <text class="s" x="96" y="236" font-size="13" fill="#6B7686">검사 대상 이미지 로드</text>
+  <text class="s" x="96" y="256" font-size="13" fill="#6B7686">저대비 시 CLAHE 폴백</text>
+  <rect x="96" y="272" width="40" height="40" rx="10" fill="#F0F4FF"/>
+  <rect x="108" y="284" width="16" height="16" rx="2" fill="none" stroke="#1454FE" stroke-width="1.5"/>
+  <line x1="102" y1="288" x2="108" y2="288" stroke="#1454FE" stroke-width="1.5"/>
+  <line x1="102" y1="296" x2="108" y2="296" stroke="#1454FE" stroke-width="1.5"/>
+  <line x1="124" y1="288" x2="130" y2="288" stroke="#1454FE" stroke-width="1.5"/>
+  <line x1="124" y1="296" x2="130" y2="296" stroke="#1454FE" stroke-width="1.5"/>
+
+  <!-- arrow 01 -> 02 -->
+  <line x1="350" y1="240" x2="378" y2="240" stroke="#C7CFDA" stroke-width="2"/>
+  <polygon points="378,233 378,247 390,240" fill="#C7CFDA"/>
+
+  <!-- STEP 02 : Triple Vision Agent -->
+  <rect x="392" y="150" width="408" height="180" rx="14" fill="#FFFFFF" stroke="#E2E7EE" stroke-width="1"/>
+  <text class="m" x="416" y="182" font-size="12" letter-spacing="1" fill="#3B7AFF">STEP 02</text>
+  <text class="s" x="416" y="212" font-size="19" font-weight="700" fill="#161B24">Triple Vision Agent</text>
+  <text class="s" x="416" y="236" font-size="13" fill="#6B7686">3-시점 ROI 병렬 분석</text>
+  <!-- 3-view thumbnails -->
+  <rect x="416" y="248" width="108" height="52" rx="8" fill="#F0F4FF" stroke="#CADBFF" stroke-width="1"/>
+  <rect x="454" y="262" width="32" height="24" rx="2" fill="none" stroke="#3B7AFF" stroke-width="1.5"/>
+  <rect x="542" y="248" width="108" height="52" rx="8" fill="#F0F4FF" stroke="#CADBFF" stroke-width="1"/>
+  <rect x="580" y="262" width="32" height="24" rx="2" fill="none" stroke="#3B7AFF" stroke-width="1.5"/>
+  <rect x="572" y="256" width="48" height="36" rx="3" fill="none" stroke="#1454FE" stroke-width="1.5" stroke-dasharray="3 3"/>
+  <rect x="668" y="248" width="108" height="52" rx="8" fill="#F0F4FF" stroke="#CADBFF" stroke-width="1"/>
+  <line x1="704" y1="260" x2="704" y2="288" stroke="#3B7AFF" stroke-width="2"/>
+  <line x1="716" y1="260" x2="716" y2="288" stroke="#3B7AFF" stroke-width="2"/>
+  <line x1="728" y1="260" x2="728" y2="288" stroke="#3B7AFF" stroke-width="2"/>
+  <line x1="740" y1="260" x2="740" y2="288" stroke="#3B7AFF" stroke-width="2"/>
+  <text class="m" x="470" y="316" font-size="10" fill="#6B7686" text-anchor="middle">FULL</text>
+  <text class="m" x="596" y="316" font-size="10" fill="#6B7686" text-anchor="middle">ANNOTATED</text>
+  <text class="m" x="722" y="316" font-size="10" fill="#6B7686" text-anchor="middle">LEAD</text>
+
+  <!-- arrow 02 -> gate -->
+  <line x1="806" y1="240" x2="834" y2="240" stroke="#C7CFDA" stroke-width="2"/>
+  <polygon points="834,233 834,247 846,240" fill="#C7CFDA"/>
+
+  <!-- GATE : confidence weighted sum -->
+  <rect x="848" y="150" width="360" height="180" rx="14" fill="#FFFFFF" stroke="#E2E7EE" stroke-width="1"/>
+  <text class="m" x="872" y="182" font-size="12" letter-spacing="1" fill="#3B7AFF">GATE</text>
+  <text class="s" x="872" y="212" font-size="19" font-weight="700" fill="#161B24">신뢰도 가중합 게이트</text>
+  <text class="s" x="872" y="236" font-size="13" fill="#6B7686">FULL·ANNOTATED·LEAD 가중 평균</text>
+  <rect x="872" y="250" width="312" height="60" rx="8" fill="#F0F4FF"/>
+  <text class="m" x="888" y="274" font-size="12" fill="#1454FE">≥ 0.95 → 판정 확정</text>
+  <text class="m" x="888" y="296" font-size="12" fill="#6B7686">0.95 미만 ↓ CRITIC 다수결</text>
+
+  <!-- branch : gate -> final (accent, confirmed) -->
+  <line x1="1028" y1="336" x2="1028" y2="388" stroke="#1454FE" stroke-width="2"/>
+  <polygon points="1021,388 1035,388 1028,399" fill="#1454FE"/>
+  <text class="m" x="1044" y="370" font-size="12" fill="#1454FE">≥ 0.95 · 판정 확정</text>
+
+  <!-- branch : gate -> CRITIC (below threshold) -->
+  <path d="M 906 336 L 906 368 L 222 368 L 222 388" fill="none" stroke="#C7CFDA" stroke-width="2"/>
+  <polygon points="215,388 229,388 222,399" fill="#C7CFDA"/>
+  <text class="m" x="560" y="360" font-size="12" fill="#6B7686" text-anchor="middle">0.95 미만 ↓</text>
+
+  <!-- ===== row 2 ===== -->
+
+  <!-- STEP 03 : CRITIC majority vote -->
+  <rect x="72" y="400" width="300" height="150" rx="14" fill="#FFFFFF" stroke="#E2E7EE" stroke-width="1"/>
+  <text class="m" x="96" y="432" font-size="12" letter-spacing="1" fill="#3B7AFF">STEP 03</text>
+  <text class="s" x="96" y="462" font-size="19" font-weight="700" fill="#161B24">CRITIC 10회 다수결</text>
+  <text class="s" x="96" y="486" font-size="13" fill="#6B7686">독립 재평가 10회 반복</text>
+  <circle cx="100" cy="516" r="4.5" fill="#1454FE"/>
+  <circle cx="120" cy="516" r="4.5" fill="#1454FE"/>
+  <circle cx="140" cy="516" r="4.5" fill="#E2E7EE"/>
+  <circle cx="160" cy="516" r="4.5" fill="#1454FE"/>
+  <circle cx="180" cy="516" r="4.5" fill="#1454FE"/>
+  <circle cx="200" cy="516" r="4.5" fill="#1454FE"/>
+  <circle cx="220" cy="516" r="4.5" fill="#E2E7EE"/>
+  <circle cx="240" cy="516" r="4.5" fill="#1454FE"/>
+  <circle cx="260" cy="516" r="4.5" fill="#E2E7EE"/>
+  <circle cx="280" cy="516" r="4.5" fill="#1454FE"/>
+  <text class="m" x="96" y="542" font-size="10" letter-spacing="1" fill="#94A0B0">10-PASS MAJORITY VOTE</text>
+
+  <!-- arrow 03 -> 04 -->
+  <line x1="378" y1="475" x2="406" y2="475" stroke="#C7CFDA" stroke-width="2"/>
+  <polygon points="406,468 406,482 418,475" fill="#C7CFDA"/>
+
+  <!-- STEP 04 : CoVe -->
+  <rect x="420" y="400" width="300" height="150" rx="14" fill="#FFFFFF" stroke="#E2E7EE" stroke-width="1"/>
+  <text class="m" x="444" y="432" font-size="12" letter-spacing="1" fill="#3B7AFF">STEP 04</text>
+  <text class="s" x="444" y="462" font-size="19" font-weight="700" fill="#161B24">CoVe 재검증</text>
+  <text class="s" x="444" y="486" font-size="13" fill="#6B7686">검증 질문 체인 생성</text>
+  <text class="s" x="444" y="506" font-size="13" fill="#6B7686">응답 교차 확인·환각 억제</text>
+  <text class="m" x="444" y="542" font-size="10" letter-spacing="1" fill="#94A0B0">CHAIN-OF-VERIFICATION</text>
+
+  <!-- arrow 04 -> final -->
+  <line x1="726" y1="475" x2="830" y2="475" stroke="#C7CFDA" stroke-width="2"/>
+  <polygon points="830,468 830,482 842,475" fill="#C7CFDA"/>
+
+  <!-- STEP 05 : verdict + Streamlit dashboard (ink card) -->
+  <rect x="848" y="400" width="360" height="150" rx="14" fill="#0B1B33"/>
+  <text class="m" x="872" y="432" font-size="12" letter-spacing="1" fill="#3B7AFF">STEP 05</text>
+  <text class="s" x="872" y="464" font-size="20" font-weight="800" fill="#EDF1F7">판정 + Streamlit 대시보드</text>
+  <text class="s" x="872" y="490" font-size="13" fill="#CADBFF">OK / NG 판정 + 근거 리포트</text>
+  <rect x="872" y="506" width="196" height="26" rx="13" fill="#16314F"/>
+  <circle cx="888" cy="519" r="3.5" fill="#1F9D6B"/>
+  <text class="m" x="900" y="523" font-size="11" fill="#EDF1F7">Streamlit Cloud 실배포</text>
+
+  <!-- ===== footer ===== -->
+  <line x1="72" y1="596" x2="1208" y2="596" stroke="#C7CFDA" stroke-width="1"/>
+  <text class="m" x="72" y="624" font-size="12" fill="#94A0B0">Python · OpenAI Vision · Streamlit · CLAHE 전처리 폴백 · submission.csv + explanations.csv</text>
+</svg>
