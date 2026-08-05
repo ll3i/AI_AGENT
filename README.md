@@ -1,3 +1,5 @@
+![banner](assets/banner.svg)
+
 # 멀티모달 기반 제조 공정 진단 AI Agent
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)
